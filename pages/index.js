@@ -1,6 +1,7 @@
 import React from "react";
 import AppLayout from "../components/appLayout";
-const Home = (props) => {
+// 여기는 index.js
+const Home = () => {
   return (
     <AppLayout>
       <div>Hello, Next!</div>
