@@ -1,22 +1,27 @@
 import React, { useCallback, useState } from "react";
 import { Form, Input, Button } from "antd";
 import Link from "next/link";
-
-const LoginForm = () => {
+import styled from "styled-components";
+const FormWrapper = styled(Form)`
+padding: 10px;
+`;
+const LoginForm = ({ setIsLoggedIn }) => {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
-
   // 컴포넌트의 props로 넘겨주는 함수는 useCallback() 꼭 사용합시다!
   const onChangeId = useCallback(({ target }) => {
     setId(target.value);
-    target.focus();
   }, []);
   const onChangePassword = useCallback(({ target }) => {
     setPassword(target.value);
-    target.focus();
-  });
+  }, []);
+  const onSubmitForm = useCallback(() => {
+    console.log(id, password);
+    setIsLoggedIn(true);
+  }, [id, password]);
+
   return (
-    <Form>
+    <FormWrapper onFinish={onSubmitForm}>
       <div>
         <label htmlFor="user-id">아이디</label>
         <br />
@@ -50,7 +55,7 @@ const LoginForm = () => {
           </a>
         </Link>
       </div>
-    </Form>
+    </FormWrapper>
   );
 };
 
