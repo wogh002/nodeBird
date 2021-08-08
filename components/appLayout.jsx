@@ -5,11 +5,12 @@ import { Menu, Input, Row, Col } from "antd";
 import UserProfile from "./userProfile";
 import LoginForm from "./loginForm";
 import styled from "styled-components";
-
+  
 const InputSearch = styled(Input.Search)`
   vertical-align: middle;
 `
 const AppLayout = ({ children }) => {
+  // gutter : 컬럼에다 padding을 각각 추가하겠다 .
   // const style = useMemo(() => ({ verticalAlign: "middle" }));
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   return (

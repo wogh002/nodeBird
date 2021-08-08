@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import { Card, Avatar, Button } from 'antd';
 const UserProfile = ({ setIsLoggedIn }) => {
     const onLogOut = useCallback(() => setIsLoggedIn(false), []);
-    //리액트에서 배열로 jsx 사용시 key 값 필수
+    //리액트에서 배열안에 jsx 사용시 key 값 필수
     return (
         <Card actions={[
             <div key="twit">짹짹 <br />0</div>,

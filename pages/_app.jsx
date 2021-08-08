@@ -3,7 +3,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import Head from "next/head";
 //웹팩이란 여러개의 파일을 하나의 js파일로 합쳐준다.
-//웹팩이 css를 보는 순간
+//next의 웹팩이 css를 보는 순간
 // css를 <style>태그로 바꿔서 html 에다가 넣어준다
 import "antd/dist/antd.css";
 
