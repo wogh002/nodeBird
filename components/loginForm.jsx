@@ -2,19 +2,15 @@ import React, { useCallback, useState } from "react";
 import { Form, Input, Button } from "antd";
 import Link from "next/link";
 import styled from "styled-components";
+import PropTypes from "prop-types";
+import useInput from "../hooks/useInput";
 const FormWrapper = styled(Form)`
-padding: 10px;
+  padding: 10px;
 `;
 const LoginForm = ({ setIsLoggedIn }) => {
-  const [id, setId] = useState("");
-  const [password, setPassword] = useState("");
   // 컴포넌트의 props로 넘겨주는 함수는 useCallback() 꼭 사용합시다!
-  const onChangeId = useCallback(({ target }) => {
-    setId(target.value);
-  }, []);
-  const onChangePassword = useCallback(({ target }) => {
-    setPassword(target.value);
-  }, []);
+  const [id, onChangeId] = useInput("");
+  const [password, onChangePassword] = useInput("");
   const onSubmitForm = useCallback(() => {
     console.log(id, password);
     setIsLoggedIn(true);
@@ -58,5 +54,8 @@ const LoginForm = ({ setIsLoggedIn }) => {
     </FormWrapper>
   );
 };
+LoginForm.propTypes = {
+  setIsLoggedIn: PropTypes.func.isRequired,
+}
 
 export default LoginForm;
