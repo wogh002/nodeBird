@@ -2,6 +2,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Head from "next/head";
+import wrapper from '../store/configureStore';
+
 //웹팩이란 여러개의 파일을 하나의 js파일로 합쳐준다.
 //next의 웹팩이 css를 보는 순간
 // css를 <style>태그로 바꿔서 html 에다가 넣어준다
@@ -26,4 +28,5 @@ NodeBird.propTypes = {
   //<Component />처럼 JSX로 쓸 수 있는 것들을 elementType이라고 합니다.
   Component: PropTypes.elementType.isRequired,
 };
-export default NodeBird;
+//서버사이드 렌더링 해주겠다.
+export default wrapper.withRedux(NodeBird);
