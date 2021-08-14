@@ -1,22 +1,24 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback } from "react";
 import { Form, Input, Button } from "antd";
 import Link from "next/link";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import useInput from "../hooks/useInput";
-import { useDispatch } from "react-redux";
-import { loginAction } from "../reducers/user";
+import { useDispatch,useSelector } from "react-redux";
+import { loginRequestAction } from "../reducers/user";
 const FormWrapper = styled(Form)`
   padding: 10px;
 `;
 const LoginForm = () => {
   // 컴포넌트의 props로 넘겨주는 함수는 useCallback() 꼭 사용합시다!
   const dispatch = useDispatch();
+  const { isLoggingIn } = useSelector((state) => state.user);
+  console.log(isLoggingIn);
   const [id, onChangeId] = useInput("");
   const [password, onChangePassword] = useInput("");
   const onSubmitForm = useCallback(() => {
     console.log(id, password);
-    dispatch(loginAction({ id, password }));
+    dispatch(loginRequestAction({ id, password }));
   }, [id, password]);
 
   return (
@@ -45,7 +47,7 @@ const LoginForm = () => {
         />
       </div>
       <div>
-        <Button type="primary" htmlType="submit">
+        <Button type="primary" htmlType="submit" loading={isLoggingIn}>
           로그인
         </Button>
         <Link href="/signup">

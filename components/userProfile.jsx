@@ -1,10 +1,12 @@
 import React, { useCallback } from "react";
 import { Card, Avatar, Button } from 'antd';
-import { useDispatch } from "react-redux";
-import { logoutAction } from "../reducers/user";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutRequestAction } from "../reducers/user";
 const UserProfile = () => {
     const dispatch = useDispatch();
-    const onLogOut = useCallback(() => dispatch(logoutAction()), []);
+    //액션이 스토어로 dispatch 될 때 마다 selector 함수는 재실행 된다  
+    const { me, isLoggingOut } = useSelector((state) => state.user)
+    const onLogOut = useCallback(() => dispatch(logoutRequestAction()), []);
     //리액트에서 배열안에 jsx 사용시 key 값 필수
     return (
         <Card actions={[
@@ -14,11 +16,11 @@ const UserProfile = () => {
         ]}>
             <Card.Meta
                 avatar={
-                    <Avatar>zc</Avatar>
+                    <Avatar>{me.nickname[0]}</Avatar>
                 }
-                title="Zero cho"
+                title={me.nickname}
             />
-            <Button onClick={onLogOut}>로그아웃</Button>
+            <Button onClick={onLogOut} loading={isLoggingOut}>로그아웃</Button>
         </Card>
     );
 };
