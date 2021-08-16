@@ -13,9 +13,9 @@ const InputSearch = styled(Input.Search)`
 const AppLayout = ({ children }) => {
   // gutter : 컬럼에다 padding을 각각 추가하겠다 .
   // const style = useMemo(() => ({ verticalAlign: "middle" }));
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const [loginDone, setLoginDone] = useState(false);
   //dispatch 될때마다 셀럭터 콜백함수 재실행.
-  const { isLoggedIn } = useSelector((state) => state.user);
+  const { me } = useSelector((state) => state.user);
   return (
     <>
       <Menu mode="horizontal">
@@ -40,7 +40,7 @@ const AppLayout = ({ children }) => {
       </Menu>
       <Row gutter={8}>
         <Col xs={24} md={6}>
-          {isLoggedIn ? <UserProfile /> : <LoginForm />}
+          {me ? <UserProfile /> : <LoginForm />}
         </Col>
         <Col xs={24} md={12}>
           {children}

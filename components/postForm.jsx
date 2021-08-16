@@ -1,20 +1,30 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Form, Input, Button } from "antd";
 import { useDispatch, useSelector } from 'react-redux';
-import { addPost } from '../reducers/post';
+import { addPostRequestAction } from '../reducers/post';
+import useInput from '../hooks/useInput';
 
 const PostForm = () => {
-    const imageInput = useRef();
-    const [text, setText] = useState('');
+    const [text, onChangeText, setText] = useInput('');
+
     const dispatch = useDispatch();
-    const { imagePaths } = useSelector(state => state.post);
-    const onChangeText = useCallback(({ target }) => setText(target.value), []);
+    const { imagePaths, addPostDone } = useSelector(state => state.post);
+
     const onSubmit = useCallback(() => {
-        dispatch(addPost());
-        setText('');
-    }, []);
+        dispatch(addPostRequestAction(text));
+        // setText('');
+        //왜 위에서 setText 지워주웠냐면 => 만약 서버쪽에서 에러발생했다고 가정한다면,
+        //사용자에게 에러발생하였습니다 잠시기다려주세요 하는데 게시글 다삭제되면 빡치니까.
+    }, [text]);
+
+    useEffect(() => {
+        if (addPostDone) {
+            setText('');
+        }
+    }, [addPostDone]);
+    const imageInput = useRef();
     const onClickImageUpload = useCallback(() => imageInput.current.click(), [imageInput.current]);
-    
+
     return (
         <Form style={{ margin: '10px 0 20px' }} encType="multipart/form-data" onFinish={onSubmit}>
             <Input.TextArea

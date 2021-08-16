@@ -4,33 +4,34 @@ import Link from "next/link";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import useInput from "../hooks/useInput";
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loginRequestAction } from "../reducers/user";
 const FormWrapper = styled(Form)`
   padding: 10px;
 `;
 const LoginForm = () => {
   // 컴포넌트의 props로 넘겨주는 함수는 useCallback() 꼭 사용합시다!
+  
   const dispatch = useDispatch();
-  const { isLoggingIn } = useSelector((state) => state.user);
-  console.log(isLoggingIn);
-  const [id, onChangeId] = useInput("");
+  const { logInLoading } = useSelector((state) => state.user);
+  const [email, onChangeEmail] = useInput("");
   const [password, onChangePassword] = useInput("");
+  
   const onSubmitForm = useCallback(() => {
-    console.log(id, password);
-    dispatch(loginRequestAction({ id, password }));
-  }, [id, password]);
+    dispatch(loginRequestAction({ email, password }));
+  }, [email, password]);
 
   return (
     <FormWrapper onFinish={onSubmitForm}>
       <div>
-        <label htmlFor="user-id">아이디</label>
+        <label htmlFor="user-email">이메일</label>
         <br />
         <Input
-          name="user-id"
-          id="user-id"
-          value={id}
-          onChange={onChangeId}
+          type="email"
+          name="user-email"
+          id="user-email"
+          value={email}
+          onChange={onChangeEmail}
           required
         />
       </div>
@@ -47,7 +48,7 @@ const LoginForm = () => {
         />
       </div>
       <div>
-        <Button type="primary" htmlType="submit" loading={isLoggingIn}>
+        <Button type="primary" htmlType="submit" loading={logInLoading}>
           로그인
         </Button>
         <Link href="/signup">
