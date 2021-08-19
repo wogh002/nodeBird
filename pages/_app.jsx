@@ -28,5 +28,6 @@ NodeBird.propTypes = {
   //<Component />처럼 JSX로 쓸 수 있는 것들을 elementType이라고 합니다.
   Component: PropTypes.elementType.isRequired,
 };
-//서버사이드 렌더링 해주겠다.
+//서버사이드 렌더링 해주겠다는 선언. 선언만 해준거임. 아직 CSR
+//이걸로 이제 개별페이지에 서버사이드 렌더링을 적용시켜줄거다.
 export default wrapper.withRedux(NodeBird);

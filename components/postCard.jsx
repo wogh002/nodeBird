@@ -7,6 +7,8 @@ import PostImages from './postImages';
 import CommentForm from './commentForm';
 import PostCardContent from './postCardContent';
 import { REMOVE_POST_REQUEST } from '../reducers/post';
+import FollowButton from './followButton';
+
 const PostCard = ({ post }) => {
     const dispatch = useDispatch();
 
@@ -54,44 +56,45 @@ const PostCard = ({ post }) => {
                         <EllipsisOutlined />
                     </Popover>
                 ]}
+                extra={<FollowButton post={post}/>}
             >
-                <Card.Meta
-                    avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
-                    title={post.User.nickname}
-                    description={<PostCardContent postData={post.content} />}
-                />
+                    <Card.Meta
+                        avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
+                        title={post.User.nickname}
+                        description={<PostCardContent postData={post.content} />}
+                    />
             </Card>
             {commentFormOpened && (
-                <div>
-                    <CommentForm post={post} />
-                    <List
-                        header={`${post.Comments.length} 개의 댓글`}
-                        itemLayout="horizontal"
-                        dataSource={post.Comments}
-                        renderItem={item => (
-                            <li>
-                                <Comment
-                                    author={item.User.nickname}
-                                    avatar={<Avatar>{item.User.nickname[0]}</Avatar>}
-                                    content={item.content}
-                                />
-                            </li>
-                        )}
-                    />
-                </div>
-            )}
+                    <div>
+                        <CommentForm post={post} />
+                        <List
+                            header={`${post.Comments.length} 개의 댓글`}
+                            itemLayout="horizontal"
+                            dataSource={post.Comments}
+                            renderItem={item => (
+                                <li>
+                                    <Comment
+                                        author={item.User.nickname}
+                                        avatar={<Avatar>{item.User.nickname[0]}</Avatar>}
+                                        content={item.content}
+                                    />
+                                </li>
+                            )}
+                        />
+                    </div>
+                )}
         </div >
-    )
+            )
 }
-PostCard.propTypes = {
-    //속성 자세하게 적어줄경우 shape 사용하자
-    post: PropTypes.shape({
-        id: PropTypes.number,
-        content: PropTypes.string,
-        User: PropTypes.object,
-        Images: PropTypes.arrayOf(PropTypes.object),
-        //객체들의 배열 arrayOf
-        Comments: PropTypes.arrayOf(PropTypes.object),
+            PostCard.propTypes = {
+                //속성 자세하게 적어줄경우 shape 사용하자
+                post: PropTypes.shape({
+                id: PropTypes.number,
+            content: PropTypes.string,
+            User: PropTypes.object,
+            Images: PropTypes.arrayOf(PropTypes.object),
+            //객체들의 배열 arrayOf
+            Comments: PropTypes.arrayOf(PropTypes.object),
     }).isRequired,
 }
-export default PostCard;
+            export default PostCard;

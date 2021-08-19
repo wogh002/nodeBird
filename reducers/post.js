@@ -1,4 +1,7 @@
 import shortId from 'shortid';
+import produce from 'immer';
+import faker from 'faker';
+
 
 const dummyPost = (data) => ({
     id: data.id, //게시글 ID
@@ -19,7 +22,11 @@ const dummyComment = (data) => ({
     },
 });
 
-//노예이름
+//노예이름.
+export const LOAD_POST_REQUEST = "LOAD_POST_REQUEST";
+export const LOAD_POST_SUCCESS = "LOAD_POST_SUCCESS";
+export const LOAD_POST_FAILURE = "LOAD_POST_FAILURE";
+
 export const ADD_POST_REQUEST = "ADD_POST_REQUEST";
 export const ADD_POST_SUCCESS = "ADD_POST_SUCCESS";
 export const ADD_POST_FAILURE = "ADD_POST_FAILURE";
@@ -90,6 +97,9 @@ export const initalState = {
     }],
     //이미지 업로드하면 경로 쌓임 imagePaths 에 
     imagePaths: [],
+    loadPostLoading: false,
+    loadPostDone: false,
+    loadPostError: null,
     addPostLoading: false,
     addPostDone: false,
     addPostError: null,
@@ -99,10 +109,57 @@ export const initalState = {
     addCommentLoading: false,
     addCommentDone: false,
     addCommentError: null,
-
+    hasMorePost: true, //무한 스크롤 할건데 false 면 더 이상 안가져오기.
 }
+export const generateDummyPost = (number) => {
+    return Array(number).fill().map(() => ({
+        id: shortId.generate(),
+        User: {
+            id: shortId.generate(),
+            nickname: faker.name.findName(),
+        },
+        content: faker.lorem.paragraph(),
+        Images: [{
+            src: faker.image.image(),
+        }],
+        Comments: [{
+            id: shortId.generate(),
+            content: faker.lorem.sentence(),
+            User: {
+                id: shortId.generate(),
+                nickname: faker.name.findName(),
+            },
+        }],
+    }))
+}
+// initalState.mainPosts = initalState.mainPosts.concat(generateDummyPost(10));
+
 const reducer = (state = initalState, action) => {
     switch (action.type) {
+        case LOAD_POST_REQUEST: {
+            return {
+                ...state,
+                loadPostLoading: true,
+                loadPostDone: false,
+                loadPostError: null,
+            }
+        }
+        case LOAD_POST_SUCCESS:
+            return {
+                ...state,
+                // mainPosts: action.data.concat(state.mainPosts),
+                mainPosts: [...action.data, ...state.mainPosts],
+                loadPostLoading: false,
+                loadPostDone: true,
+                hasMorePost: state.mainPosts.length < 50,
+            }
+        case LOAD_POST_FAILURE:
+            return {
+                ...state,
+                loadPostLoading: false,
+                loadPostError: action.error
+            }
+
         case ADD_POST_REQUEST: {
             return {
                 ...state,
