@@ -59,6 +59,14 @@ export const initalState = {
     me: null,
     signUpData: {},
     loginData: {},
+
+    followLoading: false,
+    followDone: false,
+    followError: null,
+
+    unFollowLoading: false,
+    unFollowDone: false,
+    unFollowError: null,
 }
 const reducer = (state = initalState, action) => {
     switch (action.type) {
@@ -159,6 +167,52 @@ const reducer = (state = initalState, action) => {
                     ...state.me,
                     Posts: state.me.Posts.filter(item => item.id !== action.data),
                 },
+            }
+        case FOLLOW_REQUEST:
+            return {
+                ...state,
+                followLoading: true,
+                followDone: false,
+                followError: null,
+            }
+        case FOLLOW_SUCCESS:
+            return {
+                ...state,
+                followLoading: false,
+                followDone: true,
+                me: {
+                    ...state.me,
+                    Followings: [{ id: action.data }, ...state.me.Followings]
+                }
+            }
+        case FOLLOW_FAILURE:
+            return {
+                ...state,
+                followLoading: false,
+                followError: action.error,
+            }
+        case UNFOLLOW_REQUEST:
+            return {
+                ...state,
+                unFollowLoading: true,
+                unFollowDone: false,
+                unFollowError: null,
+            }
+        case UNFOLLOW_SUCCESS:
+            return {
+                ...state,
+                unFollowLoading: false,
+                unFollowDone: true,
+                me: {
+                    ...state.me,
+                    Followings: state.me.Followings.filter(item => item.id !== action.data),
+                }
+            }
+        case UNFOLLOW_FAILURE:
+            return {
+                ...state,
+                unFollowLoading: false,
+                unFollowError: action.error,
             }
         default: return state;
     }

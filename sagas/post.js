@@ -26,7 +26,6 @@ import { ADD_POST_TO_ME, REMOVE_POST_OF_ME } from '../reducers/user';
 //     //     return axios.get('/api/posts', data);
 //     // }
 
-
 function* addPost(action) {
     try {
         //call => promise await 이라고 생각하자 

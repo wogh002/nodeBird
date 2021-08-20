@@ -68,6 +68,37 @@ function* signUp(action) {
     }
 }
 
+function* follow(action) {
+    try {
+        yield delay(1000);
+        yield put({
+            type: FOLLOW_SUCCESS,
+            data: action.data,
+        });
+    }
+    catch (err) {
+        yield put({
+            type: FOLLOW_FAILURE,
+            error: err.response.data
+        })
+    }
+}
+function* unFollow(action) {
+    try {
+        yield delay(1000);
+        yield put({
+            type: UNFOLLOW_SUCCESS,
+            data: action.data,
+        });
+    }
+    catch (err) {
+        yield put({
+            type: UNFOLLOW_FAILURE,
+            error: err.response.data
+        })
+    }
+}
+
 //비동기 액션 크리에이터 (이벤트리스너 처럼 생각)
 function* watchLogIn() {
     yield takeLatest(LOG_IN_REQUEST, logIn);
@@ -78,10 +109,20 @@ function* watchLogOut() {
 function* watchSignUp() {
     yield takeLatest(SIGN_UP_REQUEST, signUp);
 }
+function* watchFollow() {
+    yield takeLatest(FOLLOW_REQUEST, follow);
+
+}
+function* watchUnFollow() {
+    yield takeLatest(UNFOLLOW_REQUEST, unFollow);
+
+}
 export default function* userSaga() {
     yield all([
         fork(watchLogIn),
         fork(watchLogOut),
         fork(watchSignUp),
+        fork(watchFollow),
+        fork(watchUnFollow),
     ])
 }
